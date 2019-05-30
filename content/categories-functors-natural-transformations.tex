@@ -140,3 +140,99 @@
 \begin{remark}
     With these axioms, any metacategory can be defined by either using the objects-and-arrows axioms, or by arrows-only axioms alone -- they are equivalent. Identity arrows in the arrows-only axioms simply substitute for explicit objects in the objects-and-arrows axioms.
 \end{remark}
+
+\subsection{Categories}
+
+\begin{definition}[Category]
+    A \textit{category} is any interpretation of the category axioms within \textit{set theory} (as opposed to a metacategory).
+\end{definition}
+
+\begin{definition}[Directed Graph (Diagram Scheme)]
+    A \textit{directed graph} (or \textit{diagram scheme}) is
+    \begin{enumerate}
+        \item \textbf{Set of objects}: $O$.
+        \item \textbf{Set of arrows}: $A$.
+        \item Two functions:
+        \begin{figure}[H]
+            \centering
+            \begin{tikzcd}
+                A \arrow[r, shift left, "\mathrm{Dom}"] \arrow[r, shift right, swap, "\mathrm{Cod}"] & O
+            \end{tikzcd}
+            \caption{Category functions.}
+            \label{fig:category-functions}
+        \end{figure}
+    \end{enumerate}
+    
+    The set of \textit{composable pairs of arrows} is given as the set of \textit{product over $O$} ($\ProductOver{O}$)
+    \begin{equation}
+        A \ProductOver{O} A \coloneqq \set{ 
+            \langle g, f \rangle \given
+            g, f \in A \land \Domain{g} = \Codomain{f}
+        }
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Category]
+    A \textit{category} is a directed graph with two additional functions
+    \begin{enumerate}
+        \item \textbf{Identity}.
+        \begin{equation}
+            \Id \colon O \to A, \quad c \mapsto \Id_c
+        \end{equation}
+        \item \textbf{Composition}.
+        \begin{equation}
+            \circ \colon A \ProductOver{O} A \to A, \quad \langle g, f \rangle \mapsto g \circ f
+        \end{equation}
+    \end{enumerate}
+    
+    Such that for all objects $a \in O$ and all composable pairs of arrows $\langle g, f \rangle \in A \ProductOver{O} A$, given the associativity and unit axioms hold,
+    \begin{gather}
+        \Domain{\Id \circ a} = a = \Codomain{\Id \circ a} \\
+        \Domain{g \circ f} = \Domain{f} \\
+        \Codomain{g \circ f} = \Codomain{g}
+    \end{gather}
+\end{definition}
+
+\begin{remark}
+    In the context of a category $C$, letters $A$ and $O$ for the set of arrows and objects are omitted for brevity without loss of information, then
+    \begin{itemize}
+        \item $c \in C$ means $c \in O$: $c$ is an object of $C$.
+        \item $f \In C$ means $f \in A$: $f$ is an arrow of $C$.
+    \end{itemize}
+\end{remark}
+
+\begin{definition}[Hom-Set]
+    The \textit{hom-set} $\HomSet{b, c}$ is the set of arrows from $b$ to $c$, i.e. arrows $f$ with $\Domain{f} = b$ and $\Codomain{f} = c$.
+\end{definition}
+
+\begin{example}
+    Some examples of categories include
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{@{} c l @{}}
+            \toprule
+            Name & Description \\
+            \midrule
+            \Category{0} & Empty category (0 objects, 0 arrows). \\
+            \Category{1} & 1 object, 1 arrow (identity). \begin{tikzcd}[row sep=1em, column sep=1em]
+                \bullet \arrow[loop right]
+            \end{tikzcd} \\
+            \Category{2} & 2 objects, 1 non-identity arrow. 
+            \begin{tikzcd}[ampersand replacement=\&, row sep=1em, column sep=1em]
+                \bullet \arrow[r] \arrow[loop left] \& \bullet \arrow[loop right]
+            \end{tikzcd} \\
+            \Category{3} & 3 objects, non-identity arrows. 
+            \begin{tikzcd}[ampersand replacement=\&, row sep=1em, column sep=1em]
+                \bullet \arrow[r] \arrow[loop left] \arrow[rd] \& \bullet \arrow[d] \arrow[loop right] \\
+                \& \bullet \arrow[loop right]
+            \end{tikzcd} \\
+            $\downdownarrows$ & 2 objects, 2 parallel non-identity arrows $a \rightrightarrows b$. 
+            \begin{tikzcd}[ampersand replacement=\&, row sep=1em, column sep=1em]
+                \bullet \arrow[r, shift left] \arrow[r, shift right] \arrow[loop left] \& \bullet \arrow[loop right]
+            \end{tikzcd} \\
+            \bottomrule
+        \end{tabular}
+        \caption{Example categories.}
+        \label{tab:example-categories}
+    \end{table}
+\end{example}
