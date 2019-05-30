@@ -202,7 +202,16 @@
 \end{remark}
 
 \begin{definition}[Hom-Set]
-    The \textit{hom-set} $\HomSet{b, c}$ is the set of arrows from $b$ to $c$, i.e. arrows $f$ with $\Domain{f} = b$ and $\Codomain{f} = c$.
+    The \textit{hom-set} $\HomSet{b, c}$ is the set of arrows from $b$ to $c$, i.e. all arrows $f$ with $\Domain{f} = b$ and $\Codomain{f} = c$.
+    
+    \begin{figure}[H]
+        \centering
+        \begin{tikzcd}
+            b \arrow[r, out=90, in=90, "f_1"] \arrow[r, out=30, in=150, "f_2"] \arrow[r, out=-30, in=-150, swap, "\dots"] \arrow[r, out=-90, in=-90, swap, "f_n"] & c
+        \end{tikzcd}
+        \caption{The $\HomSet{b, c} = \set{ f_1, f_2, \dots, f_n }$ with each $f_i \colon b \to c$.}
+        \label{fig:hom-set}
+    \end{figure}
 \end{definition}
 
 \begin{example}
