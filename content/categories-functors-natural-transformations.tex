@@ -1,0 +1,142 @@
+\section{Categories, Functors, and Natural Transformation}
+
+\subsection{Categories Axioms}
+
+\begin{definition}[Metagraph]
+    A \textit{metagraph} has:
+    \begin{itemize}
+        \item Contents
+        \begin{enumerate}
+            \item \textbf{Objects} $a, b, c, \dots$.
+            \item \textbf{Arrows} (or \textbf{morphisms}) $f, g, h, \dots$.
+        \end{enumerate}
+        \item Operations
+        \begin{enumerate}
+            \item \textbf{Domain}: each arrow $f$ is assigned an object $a = \Domain{f}$.
+            \item \textbf{Codomain}: each arrow $f$ is assigned an object $b = \Codomain{f}$.
+        \end{enumerate}
+    \end{itemize}
+    
+    Each \textit{arrow} $f$ starts at its \textit{domain} (or \textit{source}) $a$ and ends at its \textit{codomain} (or \textit{target}) $b$, denoted $f \colon a \to b$ or graphically,
+    \begin{figure}[H]
+        \centering
+        \begin{tikzcd}
+            a \arrow[r, "f"] & b
+        \end{tikzcd}
+        \caption{Arrow $f$ starting at domain $a$ and ending at codomain $b$.}
+        \label{fig:arrow}
+    \end{figure}
+    
+    Here $\Domain{f} = a$ and $\Codomain{f} = b$.
+\end{definition}
+
+\begin{definition}[Metacategory]
+    A \textit{metacategory} is a metagraph with two additional operations:
+    \begin{enumerate}
+        \item \textbf{Identity}: each object $a$ is assigned an \textit{identity arrow} $\Id_a \coloneqq 1_a \colon a \to a$.
+        \begin{figure}[H]
+            \centering
+            \begin{tikzcd}
+                a \arrow[loop right, "\Id_a = 1_a"]
+            \end{tikzcd}
+            \caption{Identity arrow $\Id_a$ of object $a$ with $\Domain{\Id_a} = \Codomain{\Id_a} = a$.}
+            \label{fig:identity-arrow}
+        \end{figure}
+        \item \textbf{Composition}: each pair of arrows $\langle g, f \rangle$ with $\Domain{g} = \Codomain{f}$ is assigned a \textit{composite} arrow $g \circ f$, where
+        \begin{equation}
+            g \circ f \colon \Domain{f} \to \Codomain{g}
+        \end{equation}
+        \begin{figure}[H]
+            \centering
+            \begin{tikzcd}
+                a \arrow[r, swap, "f"] \arrow[rr, bend left, "g \circ f"] & b \arrow[r, swap, "g"] & c
+            \end{tikzcd}
+            \caption{Composite arrow $g \circ f$ given $\Domain{g} = \Codomain{f}$.}
+            \label{fig:composite-arrow}
+        \end{figure}
+    \end{enumerate}
+    
+    The two additional operations in a metacategory satisfies the two axioms:
+    \begin{enumerate}
+        \item \textbf{Associativity}: given any objects $a, b, c, d$ and arrows in between of the form
+        \begin{figure}[H]
+            \centering
+            \begin{tikzcd}
+                a \arrow[r, "f"] & b \arrow[r, "g"] & c \arrow[r, "h"] & d
+            \end{tikzcd}
+        \end{figure}
+        Then the equality below is satisfied
+        \begin{equation}
+            h \circ (g \circ f) = (h \circ g) \circ f
+        \end{equation}
+        That is,
+        \begin{figure}[H]
+            \centering
+            \begin{tikzcd}[column sep=8em, row sep=4em]
+                a \arrow[r, "h \circ (g \circ f) = (h \circ g) \circ f"] \arrow[d, swap, "f"] \arrow[rd, near end, "g \circ f"] & d \\
+                b \arrow[r, swap, "g"] \arrow[ru, near start, "h \circ g"] & c \arrow[u, swap, "h"]
+            \end{tikzcd}
+            \caption{Associativity axiom.}
+            \label{fig:associativity-axiom}
+        \end{figure}
+        \item \textbf{Unit Law}: for any arrows $f \colon a \to b$ and $g \colon b \to c$, their respective composition with identity arrow $1_b$ gives
+        \begin{align}
+            1_b \circ f &= f \\
+            g \circ 1_b &= g
+        \end{align}
+        That is,
+        \begin{figure}[H]
+            \centering
+            \begin{tikzcd}[row sep=3em]
+                a \arrow[r, "f"] \arrow[rd, "f"] & b \arrow[d, "1_b"] \arrow[rd, "g"] & \\
+                  & b \arrow[r, "g"] & c
+            \end{tikzcd}
+            \caption{Unit Law.}
+            \label{fig:unit-law}
+        \end{figure}
+    \end{enumerate}
+\end{definition}
+
+\begin{example}
+    In the metacategory of \textit{sets}, with objects being all sets and arrows being all functions. A function in this context is a function with specified domain and codomain, i.e. a function $f \colon X \to Y$ maps from its domain $X$ to its codomain $Y$. A rule $x \mapsto f(x)$, i.e. the suitable set of pairs $\langle x, f(x) \rangle$, maps each element $x \in X$ to an element $f(x) \in Y$.
+    
+    For any set $S$, the mapping $\Forall s \in S \colon s \mapsto s$ is the \textit{identity function} $1_S \colon S \to S$.
+    
+    Should $S \subseteq Y$, then $\Forall s \colon s \in S \to s \in Y$ describes the \textit{inclusion function} $S \to Y$. The identity function and inclusion function are \textit{different}, unless $S = Y$ when both the identity and inclusion relation holds true, i.e. $S = Y \to S \subseteq Y$.
+\end{example}
+
+\begin{definition}[Commutative Diagram]
+    A diagram is \textit{commutative} iff all paths that share a common starting point and ending point are equivalent \cite{commutative-diagrams}.
+\end{definition}
+
+\begin{remark}
+    If $b$ is any object of a metacategory $C$, then its identity arrow $1_b$ is determined by the unit law. It is thus useful to denote the identity arrow $1_b$ with the object $b$ itself, with $b \colon b \to b$ and as a result $1_b = b = \Id_b$ are all aliases for each other.
+\end{remark}
+
+\begin{definition}[Arrows-Only Metacategory]
+    Because objects of a metacategory have one-to-one correspondence with its identity arrows, the objects may be safely omitted and only arrows are to dealt with. Then an \textit{arrows-only metacategory} $C$ consists of the data:
+    \begin{enumerate}
+        \item \textbf{Arrows}.
+        \item \textbf{Composable pairs of arrows}: $\langle g, f \rangle$.
+        \item \textbf{Composite}: an operation assigning the composite $g \circ f$ to each composable pair $\langle g, f \rangle$.
+    \end{enumerate}
+    
+    Then $g \circ f$ is \textit{defined} iff $\langle g, f \rangle$ is a composable pair.
+    
+    In the arrows-only metacategory $C$, an identity arrow $u$ is one such that:
+    \begin{enumerate}
+        \item $f \circ u$ is defined implies $f \circ u = f$
+        \item $u \circ g$ is defined implies $u \circ g = g$
+    \end{enumerate}
+    
+    The data of the metacategory $C$ is required to satisfy three axioms:
+    \begin{enumerate}
+        \item Composite $(h \circ g) \circ f$ is defined iff composite $h \circ (g \circ f)$ is defined. The two composites are equal if both are defined, with the triple composite written as $h \circ g \circ f$.
+        \item Triple composite $h \circ g \circ f$ is defined iff both $h \circ g$ and $g \circ f$ are defined.
+        \item For each arrow $g$ of category $C$, there exists identity arrows $u$ and $u'$ such that $u' \circ g$ and $g \circ u$ are defined.
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}
+    With these axioms, any metacategory can be defined by either using the objects-and-arrows axioms, or by arrows-only axioms alone -- they are equivalent. Identity arrows in the arrows-only axioms simply substitute for explicit objects in the objects-and-arrows axioms.
+\end{remark}
